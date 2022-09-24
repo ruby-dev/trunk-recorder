@@ -1,0 +1,60 @@
+version: "3"
+services:
+  ##
+  ## PROXY CONTAINER
+  ##
+  proxy:
+    image: "jc21/nginx-proxy-manager:latest"
+    container_name: proxy
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+      - 81:81
+    volumes:
+      - ./data/proxy:/data
+      - ./data/proxy/certificates:/etc/letsencrypt
+    networks:
+      - app-ext
+      - app-int
+
+  ##
+  ## TRUNK-RECORDER CONTAINER
+  ##
+  recorder:
+    image: "robotastic/trunk-recorder:latest"
+    container_name: recorder
+    restart: unless-stopped
+    privileged: true
+    command: ["trunk-recorder","--config=/app/config.json"]
+    logging:
+      options:
+        {"max-size":"10m", "max-file":"5"}
+    volumes:
+      - ./data/recorder:/app
+      - /var/run/dbus:/var/run/dbus
+      - /var/run/avahi-daemon/socket:/var/run/avahi-daemon/socket
+      - /dev/bus/usb:/dev/bus/usb
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - app-int
+
+  ##
+  ## RADIO WEB CONTAINER
+  ##
+  radio: 
+    environment: 
+      - TZ=America/Chicago
+    image: docker.io/chuot/rdio-scanner:latest
+    volumes:
+      - ./data/radio:/app/data
+    networks:
+      - app-int
+
+##
+## NETWORKS (INTERNAL & EXTERNAL)
+##
+networks:
+  app-int:
+  app-ext:
+    external: true
