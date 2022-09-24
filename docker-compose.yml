@@ -42,10 +42,12 @@ services:
   ##
   ## RADIO WEB CONTAINER
   ##
-  radio: 
+  radio:
+    image: docker.io/chuot/rdio-scanner:latest
+    container_name: radio
+    restart: unless-stopped
     environment: 
       - TZ=America/Chicago
-    image: docker.io/chuot/rdio-scanner:latest
     volumes:
       - ./data/radio:/app/data
     networks:
