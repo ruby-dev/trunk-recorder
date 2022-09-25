@@ -42,11 +42,23 @@ services:
       - /var/run/dbus:/var/run/dbus
       - /var/run/avahi-daemon/socket:/var/run/avahi-daemon/socket
       - /dev/bus/usb:/dev/bus/usb
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
-
-
-
-
+##
+## RADIO CONTAINER
+##
+  radio:
+    container_name: radio
+    build:
+      context: ./radio
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - app-internal
+    volumes:
+      - ./radio/app/data:/app/data
 
 
 
