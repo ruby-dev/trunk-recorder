@@ -12,9 +12,11 @@ set_env() {
   fi
 }
 
-set_env $BROADCASTIFY_API_KEY     BROADCASTIFY_API_KEY    /app/config.json
-set_env $BROADCASTIFY_NODE_ID_1   BROADCASTIFY_NODE_ID_1  /app/config.json
-set_env $BROADCASTIFY_NODE_ID_2   BROADCASTIFY_NODE_ID_2  /app/config.json
+set_env $BROADCASTIFY_API_KEY BROADCASTIFY_API_KEY /app/config.json
+set_env $BROADCASTIFY_NODE_ID_1 BROADCASTIFY_NODE_ID_1 /app/config.json
+set_env $BROADCASTIFY_NODE_ID_2 BROADCASTIFY_NODE_ID_2 /app/config.json
+set_env $RADIO_API_KEY RADIO_API_KEY /app/config.json
+set_env $RADIO_SYSTEM_ID RADIO_SYSTEM_ID /app/config.json
 
 set -e
 exec "$@"
