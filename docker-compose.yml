@@ -61,6 +61,7 @@ services:
   ##
   icecast:
     image: moul/icecast
+    container_name: icecast
     volumes:
       - ./data/icecast/logs:/usr/local/icecast/logs:z
       - ./data/icecast/config:/etc/icecast2:z
