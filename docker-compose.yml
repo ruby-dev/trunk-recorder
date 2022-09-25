@@ -45,6 +45,8 @@ services:
     image: docker.io/chuot/rdio-scanner:latest
     container_name: radio
     restart: unless-stopped
+    ports:
+      - 3000:3000
     environment: 
       - TZ=America/Chicago
     volumes:
