@@ -1,0 +1,100 @@
+{
+  "ver": 2,
+  "logFile": true,
+  "frequencyFormat": "mhz",
+  "broadcastifyCallsServer": "https://api.broadcastify.com/call-upload",
+  "controlWarnRate": 5,
+  "callTimeout": 2,
+  "systems": [{
+    "control_channels": [771306250,772381250],
+    "type": "p25",
+    "talkgroupsFile": "channels.csv",
+    "shortName": "fbsc",
+    "broadcastifyApiKey": "9d1387f8-d8a2-11ec-8ee5-0ecc8ab9ccec",
+    "broadcastifySystemId": "1635",
+    "hideEncrypted": true,
+    "audioArchive": false,
+    "callLog": false,
+    "transmissionArchive": false,
+    "digitalLevels": 1
+  },{
+    "control_channels": [858937500,859262500,859437500,859762500,859937500],
+    "type": "p25",
+    "talkgroupsFile": "channels.csv",
+    "shortName": "hggss",
+    "broadcastifyApiKey": "9d1387f8-d8a2-11ec-8ee5-0ecc8ab9ccec",
+    "broadcastifySystemId": "1646",
+    "hideEncrypted": true,
+    "audioArchive": false,
+    "callLog": false,
+    "transmissionArchive": false,
+    "digitalLevels": 1
+  }],
+  "sources": [{
+    "center": 770337500,
+    "rate": 2400000,
+    "ppm": 0.5,
+    "gain": 100,
+    "mixGain": 10,
+    "lnaGain": 230,
+    "vga1Gain": 230,
+    "digitalRecorders": 4,
+    "driver": "osmosdr",
+    "device": "rtl=00000002,buflen=65536"
+  },{
+    "center": 772943750,
+    "rate": 2400000,
+    "ppm": 0.5,
+    "gain": 100,
+    "mixGain": 10,
+    "lnaGain": 230,
+    "vga1Gain": 230,
+    "digitalRecorders": 0,
+    "driver": "osmosdr",
+    "device": "rtl=00000003,buflen=65536"
+  },{
+    "center": 851881250,
+    "rate": 2400000,
+    "ppm": 0.5,
+    "gain": 100,
+    "mixGain": 10,
+    "lnaGain": 230,
+    "vga1Gain": 230,
+    "digitalRecorders": 5,
+    "driver": "osmosdr",
+    "device": "rtl=00000004,buflen=65536"
+  },{
+    "center": 853587500,
+    "rate": 2400000,
+    "ppm": 0.75,
+    "gain": 200,
+    "mixGain": 5,
+    "lnaGain": 150,
+    "vga1Gain": 150,
+    "digitalRecorders": 7,
+    "driver": "osmosdr",
+    "device": "rtl=00000005,buflen=65536"
+  },{
+    "center": 856987500,
+    "rate": 2400000,
+    "ppm": 0.5,
+    "gain": 100,
+    "mixGain": 10,
+    "lnaGain": 230,
+    "vga1Gain": 230,
+    "digitalRecorders": 10,
+    "driver": "osmosdr",
+    "device": "rtl=00000006,buflen=65536"
+  },{
+    "center": 859462500,
+    "rate": 2400000,
+    "ppm": 0.5,
+    "gain": 100,
+    "mixGain": 10,
+    "lnaGain": 230,
+    "vga1Gain": 230,
+    "digitalRecorders": 7,
+    "driver": "osmosdr",
+    "device": "rtl=00000007,buflen=65536"
+  }]
+}

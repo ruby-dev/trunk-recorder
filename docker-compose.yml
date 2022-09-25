@@ -1,80 +1,169 @@
 version: "3"
 services:
-  ##
-  ## PROXY CONTAINER
-  ##
+##
+## NGINX PROXY MANAGER CONTAINER
+##
   proxy:
-    image: "jc21/nginx-proxy-manager:latest"
     container_name: proxy
+    build:
+      context: ./nginx-proxy-manager
     restart: unless-stopped
+    env_file:
+      - .env
     ports:
       - 80:80
       - 443:443
       - 81:81
-    volumes:
-      - ./data/proxy:/data
-      - ./data/proxy/certificates:/etc/letsencrypt
-    env_file:
-      - .env
     networks:
-      - app-ext
-      - app-int
+      - app-external
+      - app-internal
+    volumes:
+      - ./nginx-proxy-manager/app/data:/data
+      - ./nginx-proxy-manager/app/certificates:/etc/letsencrypt
 
-  ##
-  ## TRUNK-RECORDER CONTAINER
-  ##
-  recorder:
-    image: "robotastic/trunk-recorder:latest"
-    container_name: recorder
+##
+## TRUNK RECORDER CONTAINER
+##
+  trunk-recorder:
+    container_name: trunk-recorder
+    build:
+      context: ./trunk-recorder
     restart: unless-stopped
     privileged: true
-    command: ["trunk-recorder","--config=/app/config.json"]
     logging:
       options:
         {"max-size":"10m", "max-file":"5"}
+    env_file:
+      - .env
+    networks:
+      - app-internal
     volumes:
-      - ./data/recorder:/app
+      - ./trunk-recorder/app:/app
       - /var/run/dbus:/var/run/dbus
       - /var/run/avahi-daemon/socket:/var/run/avahi-daemon/socket
       - /dev/bus/usb:/dev/bus/usb
-    env_file:
-      - .env
-    networks:
-      - app-int
 
-  ##
-  ## RADIO WEB CONTAINER
-  ##
-  radio:
-    image: docker.io/chuot/rdio-scanner:latest
-    container_name: radio
-    restart: unless-stopped
-    volumes:
-      - ./data/radio:/app/data
-    env_file:
-      - .env
-    networks:
-      - app-int
 
-  ##
-  ## ICECAST SERVER
-  ##
-  icecast:
-    image: moul/icecast
-    container_name: icecast
-    volumes:
-      - ./data/icecast/logs:/usr/local/icecast/logs:z
-      - ./data/icecast/config:/etc/icecast2:z
-      - ./data/icecast/icecast.xml:/etc/icecast2/icecast.xml:z
-    env_file:
-      - .env
-    networks:
-      - app-int
+
+
+
+
+
+
+
+
+# ##
+# ## ICECAST CONTAINER
+# ##
+#   icecast:
+#     container_name: icecast
+#     restart: unless-stopped
+#     env_file:
+#       - .env
+#     networks:
+#       - app-internal
+
+# ##
+# ## LIQUIDSOAP CONTAINER
+# ##
+#   liquidsoap:
+#     container_name: liquidsoap
+#     restart: unless-stopped
+#     env_file:
+#       - .env
+#     networks:
+#       - app-internal
 
 ##
 ## NETWORKS (INTERNAL & EXTERNAL)
 ##
 networks:
-  app-int:
-  app-ext:
+  app-internal:
+  app-external:
     external: true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#   ##
+#   ## PROXY CONTAINER
+#   ##
+#   proxy:
+#     image: "jc21/nginx-proxy-manager:latest"
+#     container_name: proxy
+#     restart: unless-stopped
+#     ports:
+#       - 80:80
+#       - 443:443
+#       - 81:81
+#     volumes:
+#       - ./data/proxy:/data
+#       - ./data/proxy/certificates:/etc/letsencrypt
+#     env_file:
+#       - .env
+#     networks:
+#       - app-ext
+#       - app-int
+
+#   ##
+#   ## RADIO WEB CONTAINER
+#   ##
+#   radio:
+#     image: docker.io/chuot/rdio-scanner:latest
+#     container_name: radio
+#     restart: unless-stopped
+#     volumes:
+#       - ./data/radio:/app/data
+#     env_file:
+#       - .env
+#     networks:
+#       - app-int
+
+#   ##
+#   ## ICECAST SERVER
+#   ##
+#   # icecast:
+#   #   image: moul/icecast
+#   #   container_name: icecast
+#   #   volumes:
+#   #     - ./data/icecast/logs:/usr/local/icecast/logs
+#   #     - ./data/icecast/config:/etc/icecast2
+#   #     - ./data/icecast/icecast.xml:/etc/icecast2/icecast.xml
+#   #   env_file:
+#   #     - .env
+#   #   ports:
+#   #     - 8000:8000
+#   #   networks:
+#   #     - app-int
+#   icecast:
+#     image: moul/icecast
+#     volumes:
+#       - ./data/icecast/logs:/var/log/icecast2
+#       # - ./data/icecast/icecast.xml:/etc/icecast2/icecast.xml
+#     env_file:
+#       - .env
+#     ports:
+#       - 8000:8000
+
+# ##
+# ## NETWORKS (INTERNAL & EXTERNAL)
+# ##
+# networks:
+#   app-int:
+#   app-ext:
+#     external: true
