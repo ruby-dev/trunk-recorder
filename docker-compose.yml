@@ -64,7 +64,7 @@ services:
   icecast:
     image: moul/icecast
     volumes:
-      - ./data/icecast/logs:/var/log/icecast2
+      - ./data/icecast/logs:/usr/local/icecast/logs
       - ./data/icecast/config:/etc/icecast2
       - ./data/icecast/icecast.xml:/etc/icecast2/icecast.xml
     ports:
