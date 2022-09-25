@@ -49,8 +49,6 @@ services:
     image: docker.io/chuot/rdio-scanner:latest
     container_name: radio
     restart: unless-stopped
-    ports:
-      - 3000:3000
     volumes:
       - ./data/radio:/app/data
     env_file:
@@ -64,11 +62,9 @@ services:
   icecast:
     image: moul/icecast
     volumes:
-      - ./data/icecast/logs:/usr/local/icecast/logs
-      - ./data/icecast/config:/etc/icecast2
-      - ./data/icecast/icecast.xml:/etc/icecast2/icecast.xml
-    ports:
-      - 8000:8000
+      - ./data/icecast/logs:/usr/local/icecast/logs:z
+      - ./data/icecast/config:/etc/icecast2:z
+      - ./data/icecast/icecast.xml:/etc/icecast2/icecast.xml:z
     env_file:
       - .env
     networks:
