@@ -1,0 +1,23 @@
+<icecast>
+  <hostname>stream.txforever.xyz</hostname>
+  <location>Houston, Texas</location>
+  <sources>30</sources>
+  <burst-on-connect>0</burst-on-connect>
+  <burst-size>0</burst-size>
+  <http-headers>
+      <header name="Access-Control-Allow-Origin" value="*" />
+  </http-headers>
+
+  <!-- LISTENERS -->
+  <listen-socket>
+    <port>8000</port>
+  </listen-socket>
+  
+  <!-- MOUNTS -->
+  <mount>
+    <mount-name>/scanner</mount-name>
+    <stream-name>Tales of Code Live Stream</stream-name>
+    <stream-description>Tales of Code Live Stream</stream-description>
+    <genre>Electronica</genre>
+  </mount>
+</icecast>
