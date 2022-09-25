@@ -58,7 +58,22 @@ services:
     networks:
       - app-internal
     volumes:
-      - ./radio/app/data:/app/data
+      - ./radio/app:/app/data
+
+##
+## ICECAST CONTAINER
+##
+  icecast:
+    container_name: icecast
+    build:
+      context: ./icecast
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - app-internal
+    volumes:
+      - ./icecast/app/icecast.xml:/etc/icecast2/icecast.xml
 
 # ##
 # ## ICECAST CONTAINER
