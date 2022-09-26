@@ -5,13 +5,14 @@
   "broadcastifyCallsServer": "https://api.broadcastify.com/call-upload",
   "controlWarnRate": 5,
   "callTimeout": 2,
+  "captureDir": "{{TR_STORAGE_DIRECTORY}}",
   "systems": [{
     "control_channels": [771306250,772381250],
     "type": "p25",
     "talkgroupsFile": "channels.csv",
     "shortName": "fbsc",
-    "broadcastifyApiKey": "BROADCASTIFY_API_KEY",
-    "broadcastifySystemId": "BROADCASTIFY_NODE_ID_1",
+    "broadcastifyApiKey": "{{TR_BROADCASTIFY_API_KEY}}",
+    "broadcastifySystemId": "{{TR_BROADCASTIFY_NODE_ID_1}}",
     "hideEncrypted": true,
     "audioArchive": false,
     "callLog": false,
@@ -22,8 +23,8 @@
     "type": "p25",
     "talkgroupsFile": "channels.csv",
     "shortName": "hggss",
-    "broadcastifyApiKey": "BROADCASTIFY_API_KEY",
-    "broadcastifySystemId": "BROADCASTIFY_NODE_ID_2",
+    "broadcastifyApiKey": "{{TR_BROADCASTIFY_API_KEY}}",
+    "broadcastifySystemId": "{{TR_BROADCASTIFY_NODE_ID_2}}",
     "hideEncrypted": true,
     "audioArchive": false,
     "callLog": false,
@@ -103,8 +104,8 @@
     "server": "https://radio.txforever.xyz",
     "systems": [{
       "shortName": "fbsc",
-      "apiKey": "RADIO_API_KEY",
-      "systemId": "RADIO_SYSTEM_ID"
+      "apiKey": "{{TR_RADIO_API_KEY}}",
+      "systemId": "{{TR_RADIO_SYSTEM_ID}}"
     }]
   }]
 }

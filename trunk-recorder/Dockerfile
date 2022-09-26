@@ -1,25 +1,61 @@
-FROM robotastic/trunk-recorder:latest
+FROM alpine:latest
 
 ##
 ## GENERAL CONFIGURATION
 ##
+ARG APP="/app"
+
+ENV TR_GENERATE_TEMPLATE="true" \
+    TR_STORAGE_DIRECTORY="/app/storage"
 
 ##
 ## WORK DIRECTORY CONFIGURATION
 ##
-
-COPY ./app/entrypoint.sh /entrypoint.sh
-
-##
-## COMMON CONFIGURATION
-##
+RUN mkdir -p $APP
+WORKDIR $APP
 
 ##
-## CONFIGURE 
+## INSTALL TOOLS
+##
+RUN apk add --no-cache curl && curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo
+
+##############################################################
+## START TRUNK-RECORDER BUILD
 ##
 
+RUN apk update && \
+    apk upgrade && \
+    apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+            -X http://dl-cdn.alpinelinux.org/alpine/edge/main \
+            -X http://dl-cdn.alpinelinux.org/alpine/edge/community \
+            build-base \
+            ca-certificates fdkaac git rtl-sdr librtlsdr boost1.80 \
+            boost1.80-dev gnupg gnuradio gnuradio-dev gr-osmosdr \
+            gr-osmosdr-dev curl-dev gmp-dev orc-dev libpthread-stubs \
+            uhd uhd-libs uhd-dev libusb-dev pkgconfig cmake \
+            libsndfile-dev sox bash
+
+RUN mkdir trunk-build && \
+    git clone https://github.com/robotastic/trunk-recorder.git && \
+    cd trunk-build && \
+    cmake ../trunk-recorder && \
+    make && \
+    make install
+
+COPY ./app/init.sh /init.sh
+COPY ./app/config-template.json /app/config-template.json
+RUN chmod +x /init.sh
+RUN mkdir -p /app/storage
+VOLUME ["/app/config","/app/storage"]
+
 ##
-## STARTUP CONFIGURATION
+## END TRUNK-RECORDER BUILD
+##############################################################
+
 ##
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["trunk-recorder", "--config=/app/config.json"]
+## RUNTIME CONFIGURATION
+##
+EXPOSE 8000
+STOPSIGNAL SIGQUIT
+ENTRYPOINT ["/init.sh"]
+CMD ["start-service"]
