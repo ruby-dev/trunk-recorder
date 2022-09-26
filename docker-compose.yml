@@ -40,7 +40,8 @@ services:
     networks:
       - app-internal
     volumes:
-      - ./trunk-recorder/app/config:/app
+      - ./trunk-recorder/app/config:/app/config
+      - ./trunk-recorder/app/storge:/app/storage
       - /var/run/dbus:/var/run/dbus
       - /var/run/avahi-daemon/socket:/var/run/avahi-daemon/socket
       - /dev/bus/usb:/dev/bus/usb

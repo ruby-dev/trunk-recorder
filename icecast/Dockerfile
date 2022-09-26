@@ -42,6 +42,7 @@ WORKDIR $APP
 ##
 RUN apk add --no-cache curl && curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo
 COPY ./app/init.sh /init.sh
+RUN chmod +x /init.sh
 
 ##############################################################
 ## START ICECAST BUILD
