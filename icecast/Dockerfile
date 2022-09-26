@@ -26,6 +26,8 @@ RUN apt-get update && \
 ## END ICECAST BUILD
 ##############################################################
 
+USER app
+
 ##
 ## RUNTIME
 ##
