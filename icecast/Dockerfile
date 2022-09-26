@@ -13,6 +13,8 @@ WORKDIR $APP
 COPY ./app/entrypoint.sh /entrypoint.sh
 VOLUME ["$APP_DIRECTORY/config"]
 
+RUN useradd --user-group --system --create-home --no-log-init app
+
 ##############################################################
 ## START ICECAST BUILD
 ##
