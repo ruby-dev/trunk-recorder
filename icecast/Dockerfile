@@ -13,7 +13,7 @@ WORKDIR $APP
 COPY ./app/entrypoint.sh /entrypoint.sh
 VOLUME ["$APP_DIRECTORY/config"]
 
-RUN useradd --user-group --system --create-home --no-log-init app
+RUN useradd -u 1000 icecast
 
 ##############################################################
 ## START ICECAST BUILD
@@ -25,8 +25,6 @@ RUN apt-get update && \
 ##
 ## END ICECAST BUILD
 ##############################################################
-
-USER app
 
 ##
 ## RUNTIME
