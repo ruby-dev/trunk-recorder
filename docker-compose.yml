@@ -61,7 +61,7 @@ services:
     networks:
       - app-internal
     volumes:
-      - ./radio/app/config:/app/data
+      - ./radio/app/storage:/app/storage
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
 
