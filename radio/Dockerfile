@@ -3,9 +3,13 @@ FROM alpine:latest
 ##
 ## GENERAL CONFIGURATION
 ##
-ARG APP="/app" \
-    TARGETARCH \
-    TARGETPLATFORM
+ARG APP="/app"
+
+# RUN ARCH="$(apk --print-arch)"; \
+#         case "$ARCH" in \
+#             armhf) export GOARM='6' ;; \
+#             x86) export GO386='387' ;; \
+#         esac; \
 
 ##
 ## WORK DIRECTORY CONFIGURATION
@@ -22,7 +26,15 @@ RUN apk add --no-cache curl bash && curl -sSL https://git.io/get-mo -o /usr/loca
 ## START RDIO BUILD
 ##
 
-RUN curl -L "https://github.com/chuot/rdio-scanner/releases/download/v6.5.6/rdio-scanner-linux-$TARGETARCH-v6.5.6.zip" > /tmp/rdio-scanner.zip && \
+RUN apkArch="$(apk --print-arch)"; \
+    case "$apkArch" in \
+      armhf) ARCH='arm' ;; \
+      aarch64) ARCH='arm64' ;; \
+      x86_64) ARCH='amd64' ;; \
+      x86) ARCH='386' ;; \ 
+      *) echo >&2 "error: unsupported architecture: $apkArch"; exit 1 ;; \
+    esac && \
+    curl -L "https://github.com/chuot/rdio-scanner/releases/download/v6.5.6/rdio-scanner-linux-$ARCH-v6.5.6.zip" > /tmp/rdio-scanner.zip && \
     unzip /tmp/rdio-scanner.zip -d /usr/local/bin && \
     chmod +x /usr/local/bin/rdio-scanner && \
     rm -fR /tmp/*
