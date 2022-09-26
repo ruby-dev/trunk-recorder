@@ -5,12 +5,6 @@ FROM alpine:latest
 ##
 ARG APP="/app"
 
-# RUN ARCH="$(apk --print-arch)"; \
-#         case "$ARCH" in \
-#             armhf) export GOARM='6' ;; \
-#             x86) export GO386='387' ;; \
-#         esac; \
-
 ##
 ## WORK DIRECTORY CONFIGURATION
 ##
@@ -34,7 +28,7 @@ RUN apkArch="$(apk --print-arch)"; \
       x86) ARCH='386' ;; \ 
       *) echo >&2 "error: unsupported architecture: $apkArch"; exit 1 ;; \
     esac && \
-    curl -L "https://github.com/chuot/rdio-scanner/releases/download/v6.5.6/rdio-scanner-linux-$ARCH-v6.5.6.zip" > /tmp/rdio-scanner.zip && \
+    curl -L "https://github.com/chuot/rdio-scanner/releases/download/v6.5.6/rdio-scanner-linux-${ARCH}-v6.5.6.zip" > /tmp/rdio-scanner.zip && \
     unzip /tmp/rdio-scanner.zip -d /usr/local/bin && \
     chmod +x /usr/local/bin/rdio-scanner && \
     rm -fR /tmp/*

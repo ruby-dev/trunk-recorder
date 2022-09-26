@@ -31,7 +31,7 @@ RUN apk update && \
             build-base \
             ca-certificates fdkaac git rtl-sdr librtlsdr boost1.80 \
             boost1.80-dev gnupg gnuradio gnuradio-dev gr-osmosdr \
-            gr-osmosdr-dev curl-dev gmp-dev orc-dev libpthread-stubs \
+            gr-osmosdr-dev libcurl gmp-dev orc-dev libpthread-stubs \
             uhd uhd-libs uhd-dev libusb-dev pkgconfig cmake \
             libsndfile-dev sox bash
 
