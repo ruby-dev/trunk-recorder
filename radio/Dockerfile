@@ -14,7 +14,7 @@ WORKDIR $APP
 ##
 ## INSTALL TOOLS
 ##
-RUN apk add --no-cache curl bash && curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo
+RUN apk add --no-cache curl bash libc6-compat && curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo
 
 ##############################################################
 ## START RDIO BUILD
