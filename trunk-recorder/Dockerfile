@@ -1,6 +1,16 @@
 FROM robotastic/trunk-recorder:latest
 
 ##
+## GENERAL CONFIGURATION
+##
+
+##
+## WORK DIRECTORY CONFIGURATION
+##
+
+COPY ./app/entrypoint.sh /app/entrypoint.sh
+
+##
 ## COMMON CONFIGURATION
 ##
 
