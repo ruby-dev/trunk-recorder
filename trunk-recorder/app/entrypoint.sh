@@ -1,8 +1,5 @@
 #!/bin/sh
 
-env
-set -x
-
 set_env() {
   if [ -n "$2" ]; then
     echo "Setting '$2' to '$1' in file '$3'"

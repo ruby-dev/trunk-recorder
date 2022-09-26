@@ -10,7 +10,7 @@ ARG APP="/app"
 ##
 RUN mkdir -p $APP
 WORKDIR $APP
-COPY ./app/entrypoint.sh $APP/entrypoint.sh
+COPY ./app/entrypoint.sh /entrypoint.sh
 VOLUME ["$APP_DIRECTORY/config"]
 
 ##############################################################
@@ -29,7 +29,7 @@ RUN apt-get update && \
 ##
 EXPOSE 8000
 STOPSIGNAL SIGQUIT
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 
 ##
 ## CONTAINER COMMANS

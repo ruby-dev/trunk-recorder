@@ -8,7 +8,7 @@ FROM robotastic/trunk-recorder:latest
 ## WORK DIRECTORY CONFIGURATION
 ##
 
-COPY ./app/entrypoint.sh /app/entrypoint.sh
+COPY ./app/entrypoint.sh /entrypoint.sh
 
 ##
 ## COMMON CONFIGURATION
@@ -21,5 +21,5 @@ COPY ./app/entrypoint.sh /app/entrypoint.sh
 ##
 ## STARTUP CONFIGURATION
 ##
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["trunk-recorder", "--config=/app/config.json"]
