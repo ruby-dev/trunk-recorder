@@ -18,8 +18,10 @@ services:
       - app-external
       - app-internal
     volumes:
-      - ./nginx-proxy-manager/app/data:/data
+      - ./nginx-proxy-manager/app/config:/data
       - ./nginx-proxy-manager/app/certificates:/etc/letsencrypt
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
 ##
 ## TRUNK RECORDER CONTAINER
@@ -38,7 +40,7 @@ services:
     networks:
       - app-internal
     volumes:
-      - ./trunk-recorder/app:/app
+      - ./trunk-recorder/app/config:/app
       - /var/run/dbus:/var/run/dbus
       - /var/run/avahi-daemon/socket:/var/run/avahi-daemon/socket
       - /dev/bus/usb:/dev/bus/usb
@@ -58,7 +60,9 @@ services:
     networks:
       - app-internal
     volumes:
-      - ./radio/app:/app/data
+      - ./radio/app/config:/app/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
 ##
 ## ICECAST CONTAINER
@@ -73,30 +77,26 @@ services:
     networks:
       - app-internal
     volumes:
-      - ./icecast/app:/app
-      - ./icecast/app/icecast.xml:/etc/icecast2/icecast.xml
+      - ./icecast/app/config:/app/config
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
-# ##
-# ## ICECAST CONTAINER
-# ##
-#   icecast:
-#     container_name: icecast
-#     restart: unless-stopped
-#     env_file:
-#       - .env
-#     networks:
-#       - app-internal
-
-# ##
-# ## LIQUIDSOAP CONTAINER
-# ##
-#   liquidsoap:
-#     container_name: liquidsoap
-#     restart: unless-stopped
-#     env_file:
-#       - .env
-#     networks:
-#       - app-internal
+##
+## LIQUIDSOAP CONTAINER
+##
+  liquidsoap:
+    container_name: liquidsoap
+    build:
+      context: ./liquidsoap
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - app-internal
+    volumes:
+      - ./liquidsoap/app/config:/app/config
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
 ##
 ## NETWORKS (INTERNAL & EXTERNAL)
@@ -105,89 +105,3 @@ networks:
   app-internal:
   app-external:
     external: true
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#   ##
-#   ## PROXY CONTAINER
-#   ##
-#   proxy:
-#     image: "jc21/nginx-proxy-manager:latest"
-#     container_name: proxy
-#     restart: unless-stopped
-#     ports:
-#       - 80:80
-#       - 443:443
-#       - 81:81
-#     volumes:
-#       - ./data/proxy:/data
-#       - ./data/proxy/certificates:/etc/letsencrypt
-#     env_file:
-#       - .env
-#     networks:
-#       - app-ext
-#       - app-int
-
-#   ##
-#   ## RADIO WEB CONTAINER
-#   ##
-#   radio:
-#     image: docker.io/chuot/rdio-scanner:latest
-#     container_name: radio
-#     restart: unless-stopped
-#     volumes:
-#       - ./data/radio:/app/data
-#     env_file:
-#       - .env
-#     networks:
-#       - app-int
-
-#   ##
-#   ## ICECAST SERVER
-#   ##
-#   # icecast:
-#   #   image: moul/icecast
-#   #   container_name: icecast
-#   #   volumes:
-#   #     - ./data/icecast/logs:/usr/local/icecast/logs
-#   #     - ./data/icecast/config:/etc/icecast2
-#   #     - ./data/icecast/icecast.xml:/etc/icecast2/icecast.xml
-#   #   env_file:
-#   #     - .env
-#   #   ports:
-#   #     - 8000:8000
-#   #   networks:
-#   #     - app-int
-#   icecast:
-#     image: moul/icecast
-#     volumes:
-#       - ./data/icecast/logs:/var/log/icecast2
-#       # - ./data/icecast/icecast.xml:/etc/icecast2/icecast.xml
-#     env_file:
-#       - .env
-#     ports:
-#       - 8000:8000
-
-# ##
-# ## NETWORKS (INTERNAL & EXTERNAL)
-# ##
-# networks:
-#   app-int:
-#   app-ext:
-#     external: true

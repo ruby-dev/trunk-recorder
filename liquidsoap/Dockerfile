@@ -14,14 +14,14 @@ COPY ./app/entrypoint.sh $APP/entrypoint.sh
 VOLUME ["$APP_DIRECTORY/config"]
 
 ##############################################################
-## START ICECAST BUILD
+## START LIQUIDSOAP BUILD
 ##
 
 RUN apt-get update && \
-    apt-get install icecast2 -y
+    apt-get install liquidsoap -y
 
 ##
-## END ICECAST BUILD
+## END LIQUIDSOAP BUILD
 ##############################################################
 
 ##
@@ -34,4 +34,4 @@ ENTRYPOINT ["/app/entrypoint.sh"]
 ##
 ## CONTAINER COMMANS
 ##
-CMD ["icecast2", "-c", "/app/config/icecast.xml"]
+# CMD ["icecast", "-c", "/app/icecast/config.xml"]
