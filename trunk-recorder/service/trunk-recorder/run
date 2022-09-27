@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec /sbin/setuser app trunk-recorder --config /app/config.json >>/var/log/trunk-recorder.log 2>&1
