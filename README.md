@@ -3,23 +3,15 @@
 #### HOW TO INSTALL?
 
 1. Clone the repository `git clone https://github.com/ruby-dev/trunk-recorder.git`
-2. Create your trunk-recorder configuration file at `./data/recorder/config.json`
-3. Create your trunk-recorder channels file at `./data/recorder/channels.csv`
+2. Change to the working directory `cd trunk-recorder`
+3. Create your .env file `cp .env.example .env`
+4. Create the stack `docker-compose up -d`
+5. Create your network
+
+   Nginx Proxy Manager: `network.tld.com`
+
+   Radio Scanner: `radio.tld.com` => `http://radio:3000`
+
+   Icecast Container: `stream.tld.com` => `http://icecast:8000`
 
 <br />
-
-#### HOW TO RUN?
-
-1. Start the applications by running `docker-compose up`
-
-<br />
-
-#### HOW TO ACCESS APPLICATIONS
-
-Nginx Proxy Admin: `http://[your-host]:81`
-
-<br />
-
-<!-- Rdio Application: `http://rdio.[host]` -->
-
-<!-- Rdio Application Admin: `http://rdio.[host]/admin` -->

@@ -41,15 +41,15 @@ WORKDIR $APP
 ## INSTALL TOOLS
 ##
 RUN apk add --no-cache curl && curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo
-COPY ./app/init.sh /init.sh
+COPY ./init.sh /init.sh
 RUN chmod +x /init.sh
+VOLUME ["/app/templates","/app/recordings"]
 
 ##############################################################
 ## START ICECAST BUILD
 ##
 RUN apk add --no-cache icecast bash
-COPY ./app/config/mime.types /etc/mime.types
-COPY ./app/config/icecast-template.xml /etc/custom.xml
+COPY ./templates/mime.types /etc/mime.types
 ##
 ## END ICECAST BUILD
 ##############################################################

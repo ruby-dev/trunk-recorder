@@ -33,10 +33,9 @@ RUN apkArch="$(apk --print-arch)"; \
     chmod +x /usr/local/bin/rdio-scanner && \
     rm -fR /tmp/*
 
-COPY ./app/init.sh /init.sh
+COPY ./init.sh /init.sh
 RUN chmod +x /init.sh
-RUN mkdir -p /app/storage
-VOLUME ["/app/storage"]
+VOLUME ["/app/storage","/app/recordings"]
 
 ##
 ## END RDIO BUILD

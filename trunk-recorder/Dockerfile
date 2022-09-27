@@ -41,11 +41,9 @@ RUN mkdir trunk-build && \
     make && \
     make install
 
-COPY ./app/init.sh /init.sh
-COPY ./app/config-template.json /app/config-template.json
+COPY ./init.sh /init.sh
 RUN chmod +x /init.sh
-RUN mkdir -p /app/storage
-VOLUME ["/app/config","/app/storage"]
+VOLUME ["/app/config","/app/templates","/app/storage"]
 
 ##
 ## END TRUNK-RECORDER BUILD

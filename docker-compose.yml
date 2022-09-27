@@ -5,8 +5,7 @@ services:
 ##
   proxy:
     container_name: proxy
-    build:
-      context: ./nginx-proxy-manager
+    image: jc21/nginx-proxy-manager:latest
     restart: unless-stopped
     env_file:
       - .env
@@ -18,8 +17,8 @@ services:
       - app-external
       - app-internal
     volumes:
-      - ./nginx-proxy-manager/app/config:/data
-      - ./nginx-proxy-manager/app/certificates:/etc/letsencrypt
+      - ./nginx-proxy-manager/data:/data
+      - ./storage/certificates:/etc/letsencrypt
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
 
@@ -40,8 +39,9 @@ services:
     networks:
       - app-internal
     volumes:
-      - ./trunk-recorder/app/config:/app/config
-      - ./trunk-recorder/app/storage:/app/storage
+      - ./trunk-recorder/config:/app/config
+      - ./trunk-recorder/templates:/app/templates
+      - ./storage/recordings:/app/storage
       - /var/run/dbus:/var/run/dbus
       - /var/run/avahi-daemon/socket:/var/run/avahi-daemon/socket
       - /dev/bus/usb:/dev/bus/usb
@@ -61,8 +61,8 @@ services:
     networks:
       - app-internal
     volumes:
-      - ./radio/app/storage:/app/storage
-      - ./trunk-recorder/app/storage:/app/tr_storage
+      - ./radio/storage:/app/storage
+      - ./storage/recordings:/app/recordings
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
 
@@ -79,7 +79,8 @@ services:
     networks:
       - app-internal
     volumes:
-      - ./icecast/app/config:/app/config
+      - ./icecast/templates:/app/templates
+      - ./storage/recordings:/app/recordings
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
 

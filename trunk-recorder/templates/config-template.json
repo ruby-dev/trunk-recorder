@@ -97,15 +97,5 @@
     "digitalRecorders": 7,
     "driver": "osmosdr",
     "device": "rtl=00000007,buflen=65536"
-  }],
-  "plugins":[{
-    "name": "rdioscanner_uploader",
-    "library": "librdioscanner_uploader.so",
-    "server": "https://radio.txforever.xyz",
-    "systems": [{
-      "shortName": "fbsc",
-      "apiKey": "{{TR_RADIO_API_KEY}}",
-      "systemId": "{{TR_RADIO_SYSTEM_ID}}"
-    }]
   }]
 }
