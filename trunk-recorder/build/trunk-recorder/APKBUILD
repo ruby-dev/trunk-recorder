@@ -1,0 +1,35 @@
+pkgname=trunk-recorder
+pkgver=4.4.1
+pkgrel=0
+pkgdesc="Records calls from a Trunked Radio System (P25 & SmartNet)"
+url="https://github.com/robotastic/trunk-recorder"
+options="!check" # no tests
+arch="aarch64 x86_64" # blocked by gnuradio
+license="GPL-3.0-only"
+makedepends="
+	cmake
+	curl-dev
+	grpc-dev
+	gr-osmosdr-dev
+	libvolk-dev
+	openssl-dev
+	protobuf-dev
+	samurai
+	"
+source="$pkgname-$pkgver.tar.gz::https://github.com/robotastic/trunk-recorder/archive/refs/tags/v$pkgver.tar.gz"
+
+build() {
+	cmake -B build -G Ninja \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+		-DCMAKE_INSTALL_LIBDIR=/usr/lib
+	cmake --build build
+}
+
+package() {
+	DESTDIR="$pkgdir" cmake --install build
+}
+
+sha512sums="
+7efd1bcb02e6d77b2152106b85e310c9eda6d3dfa946cf47a1bda5decb5851ffc9833290d5c99c877fce17fc8ea987a38e1d20d279c2ce360403a34a2f978ad8  trunk-recorder-4.4.1.tar.gz
+"

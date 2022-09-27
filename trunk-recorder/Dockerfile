@@ -1,4 +1,41 @@
-FROM alpine:latest
+##############################################################
+## PACKAGE BUILDER CONTAINER
+## BUILDS TO PACKAGE packages/packager/aarch64/[PACKAGE]
+##############################################################
+
+FROM alpine:edge AS builder
+
+ADD build/repositories /etc/apk/repositories
+RUN apk -U add sudo alpine-sdk bash
+
+RUN mkdir -p /var/cache/distfiles && \
+    adduser -D packager && \
+    addgroup packager abuild && \
+    chgrp abuild /var/cache/distfiles && \
+    chmod g+w /var/cache/distfiles && \
+    echo "packager    ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+ADD build/setup.sh /home/packager/bin/setup.sh
+RUN chmod +x /home/packager/bin/setup.sh
+
+WORKDIR /work
+USER packager
+
+ADD build /home/packager/
+
+RUN mkdir -p /home/packager/.abuild && \
+    /home/packager/bin/setup.sh && \
+    sudo chown -R packager /home/packager/ && \
+    sudo chgrp -R packager /home/packager/ && \
+    cd /home/packager/trunk-recorder && \
+    abuild checksum && \
+    abuild -r
+
+##############################################################
+## CONTAINER BUILDER
+##############################################################
+
+FROM alpine:edge
 
 ##
 ## GENERAL CONFIGURATION
@@ -17,33 +54,22 @@ WORKDIR $APP
 ##
 ## INSTALL TOOLS
 ##
-RUN apk add --no-cache curl && curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo
+COPY ./init.sh /init.sh
+
+RUN apk add --no-cache sudo curl bash libc6-compat && \
+    curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo && \
+    chmod +x /init.sh
 
 ##############################################################
 ## START TRUNK-RECORDER BUILD
 ##
 
-RUN apk update && \
-    apk upgrade && \
-    apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-            -X http://dl-cdn.alpinelinux.org/alpine/edge/main \
-            -X http://dl-cdn.alpinelinux.org/alpine/edge/community \
-            build-base ca-certificates fdkaac git rtl-sdr librtlsdr \
-            boost1.80 boost1.80-dev gnupg gnuradio gnuradio-dev \
-            gr-osmosdr gr-osmosdr-dev openssl-dev libc6-compat curl-dev gmp-dev \
-            orc-dev libpthread-stubs uhd uhd-libs uhd-dev libusb-dev \
-            pkgconfig cmake libsndfile-dev sox bash
-
-RUN mkdir trunk-build && \
-    git clone https://github.com/robotastic/trunk-recorder.git && \
-    cd trunk-build && \
-    cmake ../trunk-recorder && \
-    make && \
-    make install
-
-COPY ./init.sh /init.sh
-RUN chmod +x /init.sh
-VOLUME ["/app/config","/app/templates","/app/storage"]
+RUN mkdir -p ./packages
+COPY --from=builder /home/packager/packages/packager/ ./packages/
+ADD build/repositories /etc/apk/repositories
+RUN APKARCH="$(apk --print-arch)" && \
+    apk add -U --allow-untrusted ./packages/$APKARCH/trunk-recorder-*.apk && \
+    rm -fR ./packages
 
 ##
 ## END TRUNK-RECORDER BUILD
@@ -54,5 +80,6 @@ VOLUME ["/app/config","/app/templates","/app/storage"]
 ##
 EXPOSE 8000
 STOPSIGNAL SIGQUIT
+VOLUME ["/app/config","/app/templates","/app/storage"]
 ENTRYPOINT ["/init.sh"]
 CMD ["start-service"]
