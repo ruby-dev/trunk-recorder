@@ -1,4 +1,8 @@
-FROM alpine:latest
+##############################################################
+## CONTAINER BUILDER
+##############################################################
+
+FROM alpine:edge
 
 ##
 ## GENERAL CONFIGURATION
@@ -14,10 +18,14 @@ WORKDIR $APP
 ##
 ## INSTALL TOOLS
 ##
-RUN apk add --no-cache curl bash libc6-compat && curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo
+COPY ./init.sh /init.sh
+
+RUN apk add --no-cache sudo curl bash libc6-compat && \
+    curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo && \
+    chmod +x /init.sh
 
 ##############################################################
-## START RDIO BUILD
+## START TRUNK-RECORDER BUILD
 ##
 
 RUN apkArch="$(apk --print-arch)"; \
@@ -33,12 +41,8 @@ RUN apkArch="$(apk --print-arch)"; \
     chmod +x /usr/local/bin/rdio-scanner && \
     rm -fR /tmp/*
 
-COPY ./init.sh /init.sh
-RUN chmod +x /init.sh
-VOLUME ["/app/storage","/app/recordings"]
-
 ##
-## END RDIO BUILD
+## END TRUNK-RECORDER BUILD
 ##############################################################
 
 ##
@@ -46,5 +50,6 @@ VOLUME ["/app/storage","/app/recordings"]
 ##
 EXPOSE 3000
 STOPSIGNAL SIGQUIT
+VOLUME ["/app/storage","/app/recordings"]
 ENTRYPOINT ["/init.sh"]
 CMD ["start-service"]

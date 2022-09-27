@@ -1,4 +1,8 @@
-FROM alpine:latest
+##############################################################
+## CONTAINER BUILDER
+##############################################################
+
+FROM alpine:edge
 
 ##
 ## GENERAL CONFIGURATION
@@ -40,16 +44,19 @@ WORKDIR $APP
 ##
 ## INSTALL TOOLS
 ##
-RUN apk add --no-cache curl && curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo
 COPY ./init.sh /init.sh
-RUN chmod +x /init.sh
-VOLUME ["/app/templates","/app/recordings"]
+
+RUN apk add --no-cache sudo curl bash libc6-compat && \
+    curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo && \
+    chmod +x /init.sh
 
 ##############################################################
 ## START ICECAST BUILD
 ##
+
 RUN apk add --no-cache icecast bash
 COPY ./templates/mime.types /etc/mime.types
+
 ##
 ## END ICECAST BUILD
 ##############################################################
@@ -59,5 +66,6 @@ COPY ./templates/mime.types /etc/mime.types
 ##
 EXPOSE 8000
 STOPSIGNAL SIGQUIT
+VOLUME ["/app/templates","/app/recordings"]
 ENTRYPOINT ["/init.sh"]
 CMD ["start-service"]
