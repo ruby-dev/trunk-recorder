@@ -1,88 +1,58 @@
 ##############################################################
-## PACKAGE BUILDER CONTAINER
-## BUILDS TO PACKAGE packages/packager/aarch64/[PACKAGE]
-##############################################################
-
-FROM alpine:edge AS builder
-
-ADD build/repositories /etc/apk/repositories
-RUN apk -U add sudo alpine-sdk bash
-
-RUN mkdir -p /var/cache/distfiles && \
-    adduser -D packager && \
-    addgroup packager abuild && \
-    chgrp abuild /var/cache/distfiles && \
-    chmod g+w /var/cache/distfiles && \
-    echo "packager    ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-
-ADD build/setup.sh /home/packager/bin/setup.sh
-RUN chmod +x /home/packager/bin/setup.sh
-
-WORKDIR /work
-USER packager
-
-ADD build /home/packager/
-
-RUN mkdir -p /home/packager/.abuild && \
-    /home/packager/bin/setup.sh && \
-    sudo chown -R packager /home/packager/ && \
-    sudo chgrp -R packager /home/packager/ && \
-    cd /home/packager/trunk-recorder && \
-    abuild checksum && \
-    abuild -r
-
-##############################################################
 ## CONTAINER BUILDER
 ##############################################################
 
-FROM alpine:edge
+## FROM BASE IMAGE
+FROM phusion/baseimage:jammy-1.0.1
 
+## INSTALL COMMON TOOLS
+RUN curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo
+
+##############################################################
+## START APPLLICATION CONFIGURATION
 ##
+
 ## GENERAL CONFIGURATION
-##
-ARG APP="/app"
+ARG APP="/app" \
+APP_USER="app"
 
-ENV TR_GENERATE_TEMPLATE="true" \
-    TR_STORAGE_DIRECTORY="/app/storage"
+## CREATE APP (NON-ROOT) USER
+RUN groupadd -r $APP_USER && useradd -r -g $APP_USER $APP_USER
 
-##
 ## WORK DIRECTORY CONFIGURATION
-##
-RUN mkdir -p $APP
+RUN mkdir -p $APP && chown app $APP_USER && chgrp app $APP_USER
 WORKDIR $APP
 
-##
-## INSTALL TOOLS
-##
-COPY ./init.sh /init.sh
+## INSTALL APPLICATIONS
+RUN apt-get update && apt-get install -y apt-transport-https build-essential ca-certificates \
+    fdkaac git gnupg gnuradio gnuradio-dev gr-osmosdr libuhd4.1.0 libuhd-dev libboost-all-dev \
+    libcurl4-openssl-dev libgmp-dev libhackrf-dev liborc-0.4-dev libpthread-stubs0-dev libssl-dev \
+    libuhd-dev libusb-dev pkg-config software-properties-common cmake libsndfile1-dev sox
 
-RUN apk add -U --no-cache sudo curl bash libc6-compat && \
-    curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo && \
-    chmod +x /init.sh
+RUN mkdir /tmp/trunk-build && \
+    git clone https://github.com/robotastic/trunk-recorder.git /tmp/trunk-recorder && \
+    cd /tmp/trunk-build && \
+    cmake ../trunk-recorder && \
+    make && \
+    make install
 
-##############################################################
-## START TRUNK-RECORDER BUILD
-##
-
-RUN mkdir -p ./packages
-COPY --from=builder /home/packager/packages/packager/ ./packages/
-ADD build/repositories /etc/apk/repositories
-
-RUN apk add --no-cache  fdkaac sox ffmpeg
-
-RUN APKARCH="$(apk --print-arch)" && \
-    apk add -U --no-cache  --allow-untrusted ./packages/$APKARCH/trunk-recorder-*.apk && \
-    rm -fR ./packages
+## DON'T FORGET TO CLEANUP
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    rm -fR /tmp/*
 
 ##
-## END TRUNK-RECORDER BUILD
+## END APPLLICATION CONFIGURATION
 ##############################################################
 
-##
-## RUNTIME CONFIGURATION
-##
-EXPOSE 8000
-STOPSIGNAL SIGQUIT
-VOLUME ["/app/config","/app/templates","/app/storage"]
-ENTRYPOINT ["/init.sh"]
-CMD ["start-service"]
+## ADD BOOT SCRIPTS & SERVICES
+COPY ./boot /etc/my_init.d
+COPY ./service /etc/service
+RUN chmod +x /etc/my_init.d/* && \
+    chmod +x /etc/service/*/run
+
+## CONFIGURE DATA VOLUMES
+VOLUME ["/app/templates", "/app/storage", "/app/recordings"]
+
+## RUN THE INIT PROCESS
+CMD ["/sbin/my_init"]
