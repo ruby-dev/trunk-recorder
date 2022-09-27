@@ -56,7 +56,7 @@ WORKDIR $APP
 ##
 COPY ./init.sh /init.sh
 
-RUN apk add --no-cache sudo curl bash libc6-compat && \
+RUN apk add -U --no-cache sudo curl bash libc6-compat && \
     curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo && \
     chmod +x /init.sh
 
@@ -67,8 +67,11 @@ RUN apk add --no-cache sudo curl bash libc6-compat && \
 RUN mkdir -p ./packages
 COPY --from=builder /home/packager/packages/packager/ ./packages/
 ADD build/repositories /etc/apk/repositories
+
+RUN apk add --no-cache  fdkaac sox ffmpeg
+
 RUN APKARCH="$(apk --print-arch)" && \
-    apk add -U --allow-untrusted ./packages/$APKARCH/trunk-recorder-*.apk && \
+    apk add -U --no-cache  --allow-untrusted ./packages/$APKARCH/trunk-recorder-*.apk && \
     rm -fR ./packages
 
 ##
