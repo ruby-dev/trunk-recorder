@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ "$TR_GENERATE_TEMPLATE" =~ ^[T-t]rue* ]]; then
-  cat /app/config-template.json | mo > /app/config/trunk-recorder.json
+  cat /app/templates/config-template.json | mo > /app/config/trunk-recorder.json
 fi
 
 case "$1" in
