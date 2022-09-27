@@ -134,7 +134,7 @@ DEC,HEX,Alpha Tag,Mode,Description,Tag,Group,Priority
 223,0df,RchmdFD Tac2,D,Fire Tactical 2,Fire-Tac,Fort Bend County - Richmond,1
 225,0E+00,Kendleton PD,D,Kendleton Police,Law Dispatch,Fort Bend County - Other Communities,1
 227,0E+00,Pcn Grove FD,D,Pecan Grove Fire,Fire Dispatch,Fort Bend County - Other Communities,1
-229,0E+00,Pcn Grv FD T,D,Pecan Grove Fire  Tactical,Fire-Talk,Fort Bend County - Other Communities,1
+229,0E+00,Pcn Grv FD T,D,Pecan Grove Fire Tactical,Fire-Talk,Fort Bend County - Other Communities,1
 231,0E+00,FB EMS-OBMC,D,EMS to Oak Bend Medical Center,Hospital,Fort Bend County EMS,1
 233,0E+00,FB EMS-MHSL,D,EMS to Memorial Hermann Sugar Land,Hospital,Fort Bend County EMS,1
 235,0eb,FB EMS-MetSL,D,EMS to Methodist Sugar Land Hospital,Hospital,Fort Bend County EMS,1
@@ -359,7 +359,7 @@ DEC,HEX,Alpha Tag,Mode,Description,Tag,Group,Priority
 739,2E+03,UH PD 3 SpEv,D,Police 3 Special Events,Law Tac,University of Houston (Main Campus),1
 753,2f1,HC Attorney1,D,Attorney Ch. 1,Law Tac,Harris County - Other Public Safety,1
 755,2f3,MetroPDInves,DE,Police Investigators,Law Tac,Metropolitan Transit Authority of Harris County,1
-757,2f5,HC Pct 1 Park,D,Precinct 1  Parks,Public Works,Harris County Commissioner,1
+757,2f5,HC Pct 1 Park,D,Precinct 1 Parks,Public Works,Harris County Commissioner,1
 761,2f9,Alvin CC PD,D,Alvin Community College Police,Law Dispatch,Brazoria County - Colleges,1
 763,2fb,Alvin Mutual Aid,T,Mutual Aid,Interop,Brazoria County - Alvin,1
 765,2fd,Alvin Spec Event,T,Special Event,Multi-Tac,Brazoria County - Alvin,1
@@ -1042,9 +1042,9 @@ DEC,HEX,Alpha Tag,Mode,Description,Tag,Group,Priority
 1794,702,SJCSO 2,D,Sheriff 2,Law Tac,San Jacinto County (FUTURE USE),1
 1796,704,SJCSO Talk 2,D,Sheriff Talk 2,Law Talk,San Jacinto County (FUTURE USE),1
 1797,705,Pasa Anml Ctrl,D,Animal Control,Public Works,Harris County - Pasadena - Services,1
-1798,706,HCESD 11-1,D,Ch. 1,EMS-Tac,Harris County  - Emergency Services District 11,1
+1798,706,HCESD 11-1,D,Ch. 1,EMS-Tac,Harris County - Emergency Services District 11,1
 1799,707,PasaPD Warrant,D,Police Warrant Officers (backup),Law Tac,Harris County - Pasadena - Police,1
-1800,708,HCESD 11-2,D,Ch. 2,EMS-Tac,Harris County  - Emergency Services District 11,1
+1800,708,HCESD 11-2,D,Ch. 2,EMS-Tac,Harris County - Emergency Services District 11,1
 1803,70b,PasaCleanStreets,D,Clean Streets,Public Works,Harris County - Pasadena - Services,1
 1805,70d,SoHouPD1 Disp,T,Police Ch. 1 Dispatch,Law Dispatch,Harris County - South Houston,1
 1807,70f,SoHouPD2 Sec,T,Police Ch. 2 Secondary,Law Tac,Harris County - South Houston,1
@@ -1054,11 +1054,11 @@ DEC,HEX,Alpha Tag,Mode,Description,Tag,Group,Priority
 1817,719,SoHouPD7 Supv,T,Police Ch. 7 Supervisors,Law Talk,Harris County - South Houston,1
 1819,71b,SoHouPDAnnou,T,Police Announcement,Law Tac,Harris County - South Houston,1
 1821,71d,SoHouPD Gang,T,Police Gangs,Law Tac,Harris County - South Houston,1
-1826,722,HCESD 11-3,D,Ch. 3,EMS-Tac,Harris County  - Emergency Services District 11,1
+1826,722,HCESD 11-3,D,Ch. 3,EMS-Tac,Harris County - Emergency Services District 11,1
 1827,723,Katy PD 4,D,Police 4,Law Tac,Fort Bend County - Katy,1
 1828,724,SJCSO Ops 2,D,Sheriff Operations 2,Law Tac,San Jacinto County (FUTURE USE),1
 1829,725,WndsrEMS Tac,T,Windsor EMS Tactical,EMS-Tac,Private Ambulance Services,1
-1830,726,HCESD 11-4,D,Ch. 4,EMS-Tac,Harris County  - Emergency Services District 11,1
+1830,726,HCESD 11-4,D,Ch. 4,EMS-Tac,Harris County - Emergency Services District 11,1
 1841,731,Pasadena EM 3,D,Emergency Management 3,Emergency Ops,Harris County - Pasadena - Services,1
 1845,735,Madison Co SO 1,D,Sheriff 1,Law Dispatch,Madison County,1
 1849,739,Madison Co SO 2,D,Sheriff 2,Law Tac,Madison County,1
@@ -1298,7 +1298,7 @@ DEC,HEX,Alpha Tag,Mode,Description,Tag,Group,Priority
 2244,8c4,Austin Co F Tac2,D,Fire Tactical 2,Fire-Tac,Austin County,1
 2245,8c5,Austin CoTac3,D,Fire Tactical 3,Fire-Tac,Austin County,1
 2271,8df,UST Police 1,T,University of Saint Thomas Police 1,Law Dispatch,College and University,1
-2272,8E+00,UST Police  2,T,University of Saint Thomas Police 2,Law Tac,College and University,1
+2272,8E+00,UST Police 2,T,University of Saint Thomas Police 2,Law Tac,College and University,1
 2273,8E+01,TXDPS Hou 1,T,Houston 1 (Harris County; patched with 155.4675 MHz),Law Dispatch,Texas DPS Region 2A Houston,1
 2274,8E+02,TXDPS Hou 2,T,Houston 2 (Harris County; patched with 159.210 MHz),Law Dispatch,Texas DPS Region 2A Houston,1
 2283,8eb,TXDPS Pierc3,T,Pierce 3 (Austin County),Law Dispatch,Texas DPS Region 2A Houston,1
@@ -3030,7 +3030,7 @@ DEC,HEX,Alpha Tag,Mode,Description,Tag,Group,Priority
 49999,c34f,HouDemoPSSec,DE,Radio Demo Public Safety Layer Secure,Public Works,Houston - Information Technology,1
 50000,c350,West Ops 1,D,West Fire Operations 1,Fire-Tac,Harris County - Westcom Communications Center,1
 50001,c351,West Tac 5,D,West Fire Tactical 5,Fire-Tac,Harris County - Westcom Communications Center,1
-50029,c36d,HCESD 11-5,D,Ch. 5,EMS-Tac,Harris County  - Emergency Services District 11,1
-50030,c36e,HCESD 11-6,D,Ch. 6,EMS-Tac,Harris County  - Emergency Services District 11,1
-50031,c36f,HCESD 11-7,D,Ch. 7,EMS-Tac,Harris County  - Emergency Services District 11,1
-50032,c370,HCESD 11-8,D,Ch. 8,EMS-Tac,Harris County  - Emergency Services District 11,1
+50029,c36d,HCESD 11-5,D,Ch. 5,EMS-Tac,Harris County - Emergency Services District 11,1
+50030,c36e,HCESD 11-6,D,Ch. 6,EMS-Tac,Harris County - Emergency Services District 11,1
+50031,c36f,HCESD 11-7,D,Ch. 7,EMS-Tac,Harris County - Emergency Services District 11,1
+50032,c370,HCESD 11-8,D,Ch. 8,EMS-Tac,Harris County - Emergency Services District 11,1

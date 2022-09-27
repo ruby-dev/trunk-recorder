@@ -17,7 +17,7 @@ services:
       - app-external
       - app-internal
     volumes:
-      - ./nginx-proxy-manager/data:/data
+      - ./nginx-proxy-manager/storage:/data
       - ./storage/certificates:/etc/letsencrypt
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
@@ -88,19 +88,20 @@ services:
 ##
 ## LIQUIDSOAP CONTAINER
 ##
-  # liquidsoap:
-  #   container_name: liquidsoap
-  #   build:
-  #     context: ./liquidsoap
-  #   restart: unless-stopped
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - app-internal
-  #   volumes:
-  #     - ./liquidsoap/app/config:/app/config
-  #     - /etc/timezone:/etc/timezone:ro
-  #     - /etc/localtime:/etc/localtime:ro
+  liquidsoap:
+    container_name: liquidsoap
+    build:
+      context: ./liquidsoap
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - app-internal
+    volumes:
+      - ./liquidsoap/templates:/app/templates
+      - ./liquidsoap/storage:/app/storage
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
 ##
 ## NETWORKS (INTERNAL & EXTERNAL)
