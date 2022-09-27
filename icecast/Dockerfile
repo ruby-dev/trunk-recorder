@@ -2,12 +2,19 @@
 ## CONTAINER BUILDER
 ##############################################################
 
-FROM alpine:edge
+## FROM BASE IMAGE
+FROM phusion/baseimage:jammy-1.0.1
 
+## INSTALL COMMON TOOLS
+RUN curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo
+
+##############################################################
+## START APPLLICATION CONFIGURATION
 ##
+
 ## GENERAL CONFIGURATION
-##
-ARG APP="/app"
+ARG APP="/app" \
+APP_USER="app"
 
 ENV IC_ADMIN="icemaster@localhost" \
 IC_ADMIN_PASSWORD="hackme" \
@@ -35,37 +42,33 @@ IC_LOGSIZE="10000" \
 IC_GENERATE_TEMPLATE="False" \
 IC_ENABLE_RELAY="False"
 
-##
+## CREATE APP (NON-ROOT) USER
+RUN groupadd -r $APP_USER && useradd -r -g $APP_USER $APP_USER
+
 ## WORK DIRECTORY CONFIGURATION
-##
-RUN mkdir -p $APP
+RUN mkdir -p $APP && chown app $APP_USER && chgrp app $APP_USER
 WORKDIR $APP
 
-##
-## INSTALL TOOLS
-##
-COPY ./init.sh /init.sh
+## CONFIGURE APPLICATIONS
+RUN apt-get update -y && \
+    apt-get install icecast2 -y
 
-RUN apk add --no-cache sudo curl bash libc6-compat && \
-    curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo && \
-    chmod +x /init.sh
-
-##############################################################
-## START ICECAST BUILD
-##
-
-RUN apk add --no-cache icecast bash
-COPY ./templates/mime.types /etc/mime.types
+## DON'T FORGET TO CLEANUP
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ##
-## END ICECAST BUILD
+## END APPLLICATION CONFIGURATION
 ##############################################################
 
-##
-## RUNTIME CONFIGURATION
-##
+## ADD BOOT SCRIPTS & SERVICES
+COPY ./boot /etc/my_init.d
+COPY ./service /etc/service
+RUN chmod +x /etc/my_init.d/* && \
+    chmod +x /etc/service/*/run
+
+## CONFIGURE DATA VOLUMES
+VOLUME ["/app/templates", "/app/storage", "/app/recordings"]
+
+## RUN THE INIT PROCESS
 EXPOSE 8000
-STOPSIGNAL SIGQUIT
-VOLUME ["/app/templates","/app/recordings"]
-ENTRYPOINT ["/init.sh"]
-CMD ["start-service"]
+CMD ["/sbin/my_init"]
