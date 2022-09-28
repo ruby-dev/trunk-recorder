@@ -1,3 +1,3 @@
 #!/bin/bash
 
-exec /usr/local/bin/trunk-recorder --config /app/config.json >>/var/log/trunk-recorder.log 2>&1
+exec trunk-recorder --config /app/config.json >>/var/log/trunk-recorder.log 2>&1

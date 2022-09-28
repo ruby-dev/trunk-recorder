@@ -1,6 +1,0 @@
-#!/bin/bash
-
-exec /sbin/setuser app /app/rdio-scanner -base_dir /app/storage >>/var/log/radio-scanner.log 2>&1
-
-
-

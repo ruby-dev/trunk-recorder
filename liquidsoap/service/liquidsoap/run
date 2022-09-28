@@ -1,3 +1,1 @@
 #!/bin/bash
-
-# exec /sbin/setuser icecast2 /usr/bin/icecast2 -c /app/icecast.xml >>/var/log/icecast.log 2>&1

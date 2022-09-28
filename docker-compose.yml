@@ -7,6 +7,9 @@ services:
     container_name: proxy
     image: jc21/nginx-proxy-manager:latest
     restart: unless-stopped
+    logging:
+      options:
+        {"max-size":"10m", "max-file":"5"}
     env_file:
       - .env
     ports:
@@ -17,18 +20,18 @@ services:
       - app-external
       - app-internal
     volumes:
-      - ./nginx-proxy-manager/storage:/data
+      - ./proxy/storage:/data
       - ./storage/certificates:/etc/letsencrypt
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
 
-##
-## TRUNK RECORDER CONTAINER
-##
+  ##
+  ## TRUNK RECORDER CONTAINER
+  ##
   trunk-recorder:
     container_name: trunk-recorder
     build:
+      target: trunk-recorder
       context: ./trunk-recorder
+      dockerfile: ../Dockerfile
     restart: unless-stopped
     privileged: true
     logging:
@@ -45,63 +48,75 @@ services:
       - /var/run/dbus:/var/run/dbus
       - /var/run/avahi-daemon/socket:/var/run/avahi-daemon/socket
       - /dev/bus/usb:/dev/bus/usb
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
 
-##
-## RADIO CONTAINER
-##
+  ##
+  ## RADIO CONTAINER
+  ##
   radio:
     container_name: radio
     build:
+      target: radio
       context: ./radio
+      dockerfile: ../Dockerfile
     restart: unless-stopped
+    privileged: true
+    logging:
+      options:
+        {"max-size":"10m", "max-file":"5"}
     env_file:
       - .env
     networks:
       - app-internal
     volumes:
       - ./radio/storage:/app/storage
+      - ./radio/templates:/app/templates
       - ./storage/recordings:/app/recordings
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
 
-##
-## ICECAST CONTAINER
-##
+  ##
+  ## ICECAST CONTAINER
+  ##
   icecast:
     container_name: icecast
     build:
+      target: icecast
       context: ./icecast
+      dockerfile: ../Dockerfile
     restart: unless-stopped
+    privileged: true
+    logging:
+      options:
+        {"max-size":"10m", "max-file":"5"}
     env_file:
       - .env
     networks:
       - app-internal
     volumes:
-      - ./icecast/templates:/app/templates
       - ./icecast/storage:/app/storage
+      - ./icecast/templates:/app/templates
       - ./storage/recordings:/app/recordings
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
 
-##
-## LIQUIDSOAP CONTAINER
-##
+  ##
+  ## LIQUIDSOAP CONTAINER
+  ##
   liquidsoap:
     container_name: liquidsoap
     build:
+      target: liquidsoap
       context: ./liquidsoap
+      dockerfile: ../Dockerfile
     restart: unless-stopped
+    privileged: true
+    logging:
+      options:
+        {"max-size":"10m", "max-file":"5"}
     env_file:
       - .env
     networks:
       - app-internal
     volumes:
-      - ./liquidsoap/templates:/app/templates
       - ./liquidsoap/storage:/app/storage
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
+      - ./liquidsoap/templates:/app/templates
+      - ./storage/recordings:/app/recordings
 
 ##
 ## NETWORKS (INTERNAL & EXTERNAL)

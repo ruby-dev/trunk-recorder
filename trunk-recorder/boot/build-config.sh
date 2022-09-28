@@ -1,7 +1,4 @@
 #!/bin/bash
 
-if [ "$TR_GENERATE_TEMPLATE" = "True" ]; then
-  exec /sbin/setuser app /usr/bin/cat /app/templates/config.json | /usr/local/bin/mo > /app/config.json
-fi
-
-exec /sbin/setuser app cp /app/templates/channels.csv /app/channels.csv
+exec /sbin/setuser 1000 cat /app/templates/config.json | mo > /app/config.json
+exec /sbin/setuser 1000 cp /app/templates/channels.csv /app/channels.csv
