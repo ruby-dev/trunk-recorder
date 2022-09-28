@@ -21,7 +21,7 @@ WORKDIR $SERVICE_DIR
 
 ## INSTALL COMMON TOOLS
 RUN curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo
-RUN apt-get update && apt-get install unzip -y
+RUN apt-get update && apt-get install nano unzip -y
 
 ## ADD BOOT SCRIPTS & SERVICES
 COPY ./boot /etc/my_init.d

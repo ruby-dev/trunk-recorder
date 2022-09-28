@@ -21,7 +21,7 @@ WORKDIR $SERVICE_DIR
 
 ## INSTALL COMMON TOOLS
 RUN curl -sSL https://git.io/get-mo -o /usr/local/bin/mo && chmod +x /usr/local/bin/mo
-RUN apt-get update && apt-get install unzip -y
+RUN apt-get update && apt-get install nano unzip -y
 
 ## ADD BOOT SCRIPTS & SERVICES
 COPY ./boot /etc/my_init.d
@@ -41,8 +41,6 @@ VOLUME ["/app/templates", "/app/storage", "/app/recordings"]
 ##
 
 FROM base-image AS radio
-
-ARG ARCH="amd64"
 
 RUN curl -L "https://github.com/chuot/rdio-scanner/releases/download/v6.5.6/rdio-scanner-linux-${ARCH}-v6.5.6.zip" > /tmp/rdio-scanner.zip && \
     unzip /tmp/rdio-scanner.zip -d /app && \

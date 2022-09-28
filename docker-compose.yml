@@ -1,27 +1,54 @@
 version: "3"
 services:
+
 ##
-## NGINX PROXY MANAGER CONTAINER
+## REQUIRED ENV VARIABLES
+## DOMAIN=
+## EMAIL=
+##
+
+##
+## PROXY CONTAINER
 ##
   proxy:
+    image: traefik:v2.8
     container_name: proxy
-    image: jc21/nginx-proxy-manager:latest
-    restart: unless-stopped
-    logging:
-      options:
-        {"max-size":"10m", "max-file":"5"}
-    env_file:
-      - .env
+    command:
+      - --log.level=DEBUG
+      - --api.insecure=false
+      - --api.dashboard=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.http.address=:80
+      - --entrypoints.https.address=:443
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
+      - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+      - --certificatesresolvers.letsencrypt.acme.email=$EMAIL
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+    networks:
+      - traefik-public
+      - traefik-private
     ports:
       - 80:80
       - 443:443
-      - 81:81
-    networks:
-      - app-external
-      - app-internal
     volumes:
-      - ./proxy/storage:/data
-      - ./storage/certificates:/etc/letsencrypt
+      - ./storage/certificates:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.middlewares.admin-auth.basicauth.users=admin:$$2y$$10$$uo.dfoirJDwM1cyFwXG5IusEJc0UTIhF5EHwzyF2dFOEGwBY9k31W
+      - traefik.http.routers.traefik-public-http.entrypoints=http
+      - traefik.http.routers.traefik-public-http.rule=Host(`network.${DOMAIN}`)
+      - traefik.http.routers.traefik-public-http.service=api@internal
+      - traefik.http.routers.traefik-public-http.middlewares=admin-auth
+      - traefik.http.routers.traefik-public-https.entrypoints=https
+      - traefik.http.routers.traefik-public-https.rule=Host(`network.${DOMAIN}`)
+      - traefik.http.routers.traefik-public-https.middlewares=admin-auth
+      - traefik.http.routers.traefik-public-https.tls=true
+      - traefik.http.routers.traefik-public-https.tls.certresolver=letsencrypt
+      - traefik.http.routers.traefik-public-https.service=api@internal
 
   ##
   ## TRUNK RECORDER CONTAINER
@@ -39,7 +66,7 @@ services:
     env_file:
       - .env
     networks:
-      - app-internal
+      - traefik-private
     volumes:
       - ./trunk-recorder/storage:/app/storage
       - ./trunk-recorder/templates:/app/templates
@@ -64,11 +91,21 @@ services:
     env_file:
       - .env
     networks:
-      - app-internal
+      - traefik-private
     volumes:
       - ./radio/storage:/app/storage
       - ./radio/templates:/app/templates
       - ./storage/recordings:/app/recordings
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-private
+      - traefik.http.routers.radio-http.entrypoints=http
+      - traefik.http.routers.radio-http.rule=Host(`radios.${DOMAIN}`)
+      - traefik.http.routers.radio-https.rule=Host(`radios.${DOMAIN}`)
+      - traefik.http.routers.radio-https.entrypoints=https
+      - traefik.http.routers.radio-https.tls=true
+      - traefik.http.routers.radio-https.tls.certresolver=letsencrypt
+      - traefik.http.services.radio.loadbalancer.server.port=3000
 
   ##
   ## ICECAST CONTAINER
@@ -86,11 +123,21 @@ services:
     env_file:
       - .env
     networks:
-      - app-internal
+      - traefik-private
     volumes:
       - ./icecast/storage:/app/storage
       - ./icecast/templates:/app/templates
       - ./storage/recordings:/app/recordings
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-private
+      - traefik.http.routers.icecast-http.entrypoints=http
+      - traefik.http.routers.icecast-http.rule=Host(`streams.${DOMAIN}`)
+      - traefik.http.routers.icecast-https.rule=Host(`streams.${DOMAIN}`)
+      - traefik.http.routers.icecast-https.entrypoints=https
+      - traefik.http.routers.icecast-https.tls=true
+      - traefik.http.routers.icecast-https.tls.certresolver=letsencrypt
+      - traefik.http.services.icecast.loadbalancer.server.port=8000
 
   ##
   ## LIQUIDSOAP CONTAINER
@@ -108,7 +155,7 @@ services:
     env_file:
       - .env
     networks:
-      - app-internal
+      - traefik-private
     volumes:
       - ./liquidsoap/storage:/app/storage
       - ./liquidsoap/templates:/app/templates
@@ -118,6 +165,6 @@ services:
 ## NETWORKS (INTERNAL & EXTERNAL)
 ##
 networks:
-  app-internal:
-  app-external:
+  traefik-private:
+  traefik-public:
     external: true
