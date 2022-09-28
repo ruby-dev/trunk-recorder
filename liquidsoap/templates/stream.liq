@@ -32,7 +32,7 @@ stream = rewrite_metadata([("title", title)], stream)
 output.icecast(
   %mp3(stereo=false, bitrate=16, samplerate=22050),
   host=HOST,
-  port=80,
+  port=8000,
   password=PASSWORD,
   genre="Scanner",
   description="Scanner audio",

@@ -43,6 +43,7 @@ VOLUME ["/app/templates", "/app/storage", "/app/recordings"]
 FROM base-image AS liquidsoap
 
 RUN apt-get install fdkaac ffmpeg sox liquidsoap -y
+RUN mkdir -p /var/run/liquidsoap
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 

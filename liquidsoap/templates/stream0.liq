@@ -1,6 +1,6 @@
 #!/usr/bin/liquidsoap
 
-HOST="{{IC_HOSTNAME}}"
+HOST="icecast"
 STREAMID="{{STREAM_0_ID}}"
 MOUNT="{{STREAM_0_MOUNT}}"
 PASSWORD="{{IC_SOURCE_PASSWORD}}"
