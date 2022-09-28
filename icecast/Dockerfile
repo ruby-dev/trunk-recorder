@@ -32,48 +32,6 @@ RUN chmod +x /etc/my_init.d/* && \
 ## CONFIGURE DATA VOLUMES
 VOLUME ["/app/templates", "/app/storage", "/app/recordings"]
 
-## RUN THE INIT PROCESS
-CMD ["/sbin/my_init"]
-
-##############################################################
-## TRUNK RECORDER
-##############################################################
-##
-## FROM BASE IMAGE
-##
-
-FROM base-image AS trunk-recorder
-
-RUN apt-get install -y apt-transport-https build-essential ca-certificates \
-    fdkaac git gnupg gnuradio gnuradio-dev gr-osmosdr libuhd4.1.0 libuhd-dev libboost-all-dev \
-    libcurl4-openssl-dev libgmp-dev libhackrf-dev liborc-0.4-dev libpthread-stubs0-dev libssl-dev \
-    libuhd-dev libusb-dev pkg-config software-properties-common cmake libsndfile1-dev sox
-
-RUN mkdir /tmp/trunk-build && \
-    git clone https://github.com/robotastic/trunk-recorder.git /tmp/trunk-recorder && \
-    cd /tmp/trunk-build && \
-    cmake ../trunk-recorder && \
-    make && \
-    make install
-
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-##############################################################
-## RADIO
-##############################################################
-##
-## FROM BASE IMAGE
-##
-
-FROM base-image AS radio
-
-RUN curl -L "https://github.com/chuot/rdio-scanner/releases/download/v6.5.6/rdio-scanner-linux-$ARCH-v6.5.6.zip" > /tmp/rdio-scanner.zip && \
-    unzip /tmp/rdio-scanner.zip -d /app && \
-    chmod +x /app/rdio-scanner
-
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-EXPOSE 3000
 
 ##############################################################
 ## ICECAST
@@ -117,13 +75,4 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 EXPOSE 8000
 
-##############################################################
-## LIQUIDSOAP
-##############################################################
-##
-## FROM BASE IMAGE
-##
-
-FROM base-image AS liquidsoap
-
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+CMD ["/sbin/my_init"]

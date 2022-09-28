@@ -29,9 +29,8 @@ services:
   trunk-recorder:
     container_name: trunk-recorder
     build:
-      target: trunk-recorder
       context: ./trunk-recorder
-      dockerfile: ../Dockerfile
+      target: trunk-recorder
     restart: unless-stopped
     privileged: true
     logging:
@@ -55,9 +54,8 @@ services:
   radio:
     container_name: radio
     build:
-      target: radio
       context: ./radio
-      dockerfile: ../Dockerfile
+      target: radio
     restart: unless-stopped
     privileged: true
     logging:
@@ -78,9 +76,8 @@ services:
   icecast:
     container_name: icecast
     build:
-      target: icecast
       context: ./icecast
-      dockerfile: ../Dockerfile
+      target: icecast
     restart: unless-stopped
     privileged: true
     logging:
@@ -101,9 +98,8 @@ services:
   liquidsoap:
     container_name: liquidsoap
     build:
-      target: liquidsoap
       context: ./liquidsoap
-      dockerfile: ../Dockerfile
+      target: liquidsoap
     restart: unless-stopped
     privileged: true
     logging:
