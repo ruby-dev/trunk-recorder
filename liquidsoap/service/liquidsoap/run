@@ -1,3 +1,3 @@
 #!/bin/bash
 
-exec liquidsoap /app/stream0.liq  >>/var/log/icecast.log 2>&1
+exec liquidsoap /app/west_houston.liq  >>/var/log/icecast.log 2>&1

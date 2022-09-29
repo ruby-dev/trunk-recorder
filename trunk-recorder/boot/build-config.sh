@@ -1,4 +1,25 @@
 #!/bin/bash
 
-exec cat /app/templates/config.json | mo > /app/config.json
-exec cp /app/templates/channels.csv /app/channels.csv
+file="/app/config.json"
+
+if [ -f "$file" ] ; then
+    rm "$file"
+fi
+
+exec cat /app/templates/config.json | mo > $file
+
+file="/app/channels.csv"
+
+if [ -f "$file" ] ; then
+    rm "$file"
+fi
+
+exec cat /app/templates/channels.csv | mo > $file
+
+file="/app/encode_upload.py"
+
+if [ -f "$file" ] ; then
+    rm "$file"
+fi
+
+exec cat /app/templates/encode_upload.py | mo > $file

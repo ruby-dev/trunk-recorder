@@ -1,3 +1,9 @@
 #!/bin/bash
 
-exec cat /app/templates/icecast.xml | mo > /app/icecast.xml
+file="/app/icecast.xml"
+
+if [ -f "$file" ] ; then
+    rm "$file"
+fi
+
+exec cat /app/templates/icecast.xml | mo > $file

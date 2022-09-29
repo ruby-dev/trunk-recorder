@@ -9,7 +9,7 @@
   "systems": [{
     "control_channels": [771306250,772381250],
     "type": "p25",
-    "talkgroupsFile": "channels.csv",
+    "talkgroupsFile": "/app/channels.csv",
     "shortName": "fbsc",
     "broadcastifyApiKey": "{{TR_BROADCASTIFY_API_KEY}}",
     "broadcastifySystemId": "{{TR_BROADCASTIFY_NODE_ID_1}}",
@@ -17,11 +17,12 @@
     "audioArchive": false,
     "callLog": false,
     "transmissionArchive": false,
-    "digitalLevels": 1
+    "digitalLevels": 1,
+    "uploadScript": "/app/encode_upload.sh"
   },{
     "control_channels": [858937500,859262500,859437500,859762500,859937500],
     "type": "p25",
-    "talkgroupsFile": "channels.csv",
+    "talkgroupsFile": "/app/channels.csv",
     "shortName": "hggss",
     "broadcastifyApiKey": "{{TR_BROADCASTIFY_API_KEY}}",
     "broadcastifySystemId": "{{TR_BROADCASTIFY_NODE_ID_2}}",

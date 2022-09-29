@@ -9,7 +9,7 @@ set("log.syslog",true)
 set("log.syslog.facility","DAEMON")
 set("log.syslog.program","liquidsoap-#{STREAMID}")
 set("server.socket",true)
-set("server.socket.path","<sysrundir>/#{STREAMID}.sock")
+set("server.socket.path","/app/streams/#{STREAMID}.sock")
 set("server.socket.permissions",511)
 
 silence = blank(duration=1.)

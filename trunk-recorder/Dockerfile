@@ -30,7 +30,7 @@ RUN chmod +x /etc/my_init.d/* && \
     chmod +x /etc/service/*/run
 
 ## CONFIGURE DATA VOLUMES
-VOLUME ["/app/templates", "/app/storage", "/app/recordings"]
+VOLUME ["/app/templates", "/app/storage", "/app/recordings", "/app/streams"]
 
 ## RUN THE INIT PROCESS
 CMD ["/sbin/my_init"]

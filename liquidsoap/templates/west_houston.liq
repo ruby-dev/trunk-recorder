@@ -1,10 +1,9 @@
 #!/usr/bin/liquidsoap
 
 HOST="icecast"
-STREAMID="{{STREAM_0_ID}}"
-MOUNT="{{STREAM_0_MOUNT}}"
+STREAMID="west-houston"
+MOUNT="west-houston"
 PASSWORD="{{IC_SOURCE_PASSWORD}}"
-NAME="{{STREAM_0_NAME}}"
-
+NAME="West Houston Law Enforcement & Fire"
 
 %include "stream.liq"
