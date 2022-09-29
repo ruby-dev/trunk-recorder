@@ -8,8 +8,7 @@ FROM phusion/baseimage:jammy-1.0.1 AS base-image
 
 ## GENERAL CONFIGURATION
 ARG SERVICE_DIR="/app" \
-    SERVICE_USER="app" \
-    ARCH="amd64"
+    SERVICE_USER="app"
 
 ## CREATE APP (NON-ROOT) USER
 RUN groupadd --gid 1000 --system $SERVICE_USER && \
@@ -41,6 +40,8 @@ VOLUME ["/app/templates", "/app/storage", "/app/recordings"]
 ##
 
 FROM base-image AS radio
+
+ARG ARCH="amd64"
 
 RUN curl -L "https://github.com/chuot/rdio-scanner/releases/download/v6.5.6/rdio-scanner-linux-${ARCH}-v6.5.6.zip" > /tmp/rdio-scanner.zip && \
     unzip /tmp/rdio-scanner.zip -d /app && \
